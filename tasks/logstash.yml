@@ -1,0 +1,27 @@
+---
+- name: download Logstash 1.4.2
+  command: bash -c "cd /root && wget https://download.elasticsearch.org/logstash/logstash/logstash-1.4.2.tar.gz" creates=/root/logstash-1.4.2.tar.gz
+
+- name: unpack Logstash
+  command: bash -c "cd /opt && tar xzf /root/logstash-1.4.2.tar.gz" creates=/opt/logstash-1.4.2
+
+- name: create /opt/logstash
+  file: state=link src=/opt/logstash-1.4.2 dest=/opt/logstash
+
+- name: create /etc/logstash
+  file: path=/etc/logstash state=directory
+
+- name: put lumberjack key
+  template: src=logstash/logstash-forwarder.key dest=/etc/ssl/private/logstash-forwarder.key owner=root group=root mode=0600
+
+- name: put lumberjack cert
+  template: src=logstash/logstash-forwarder.crt dest=/etc/ssl/certs/logstash-forwarder.crt owner=root group=root mode=0644
+
+- name: put logstash config
+  template: src=logstash/logstash.conf dest=/etc/logstash/logstash.conf owner=root group=root mode=0644
+
+- name: put logstash service descriptor
+  template: src=logstash/logstash-eye.rb dest=/etc/eye/logstash.rb owner=root group=root mode=0644
+
+- name: load config in eye
+  command: bash -c "source /usr/local/rvm/scripts/rvm && eye l /etc/eye/apps.eye"

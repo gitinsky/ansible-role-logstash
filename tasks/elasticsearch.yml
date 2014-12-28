@@ -1,0 +1,21 @@
+---
+- name: download Elasticsearch 1.1.1
+  command: bash -c "cd /root && wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.1.tar.gz" creates=/root/elasticsearch-1.1.1.tar.gz
+
+- name: unpack Elasticsearch
+  command: bash -c "cd /opt && tar xzf /root/elasticsearch-1.1.1.tar.gz" creates=/opt/elasticsearch-1.1.1
+
+- name: create /opt/elasticsearch
+  file: state=link src=/opt/elasticsearch-1.1.1 dest=/opt/elasticsearch
+
+- name: put elasticsearch config
+  template: src=elasticsearch/elasticsearch.yml dest=/opt/elasticsearch/config/elasticsearch.yml owner=root group=root mode=0644
+
+- name: put elasticsearch env vars
+  template: src=elasticsearch/elasticsearch.in.sh dest=/opt/elasticsearch/bin/elasticsearch.in.sh owner=root group=root mode=0755
+
+- name: put elasticsearch service descriptor
+  template: src=elasticsearch/es-eye.rb dest=/etc/eye/elasticsearch.rb owner=root group=root mode=0644
+
+- name: load config in eye
+  command: bash -c "source /usr/local/rvm/scripts/rvm && eye l /etc/eye/apps.eye"

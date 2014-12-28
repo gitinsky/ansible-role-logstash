@@ -1,0 +1,9 @@
+---
+- name: install ntp
+  apt: name=ntp state=present
+
+- include: sunjdk.yml
+
+- include: elasticsearch.yml
+
+- include: logstash.yml
