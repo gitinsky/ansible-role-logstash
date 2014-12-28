@@ -14,6 +14,9 @@
 - name: put elasticsearch env vars
   template: src=elasticsearch/elasticsearch.in.sh dest=/opt/elasticsearch/bin/elasticsearch.in.sh owner=root group=root mode=0755
 
+- name: put elasticsearch startup script
+  template: src=elasticsearch/elasticsearch dest=/opt/elasticsearch/bin/elasticsearch owner=root group=root mode=0755
+
 - name: put elasticsearch service descriptor
   template: src=elasticsearch/es-eye.rb dest=/etc/eye/elasticsearch.rb owner=root group=root mode=0644
 

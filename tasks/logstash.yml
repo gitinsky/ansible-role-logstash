@@ -20,6 +20,9 @@
 - name: put logstash config
   template: src=logstash/logstash.conf dest=/etc/logstash/logstash.conf owner=root group=root mode=0644
 
+- name: put logstash startup script
+  template: src=logstash/logstash dest=/opt/logstash/bin/logstash owner=root group=root mode=0755
+
 - name: put logstash service descriptor
   template: src=logstash/logstash-eye.rb dest=/etc/eye/logstash.rb owner=root group=root mode=0644
 
