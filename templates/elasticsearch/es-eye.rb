@@ -7,8 +7,8 @@ Eye.application 'elasticsearch' do
   process :elasticsearch do
     pid_file '/var/run/elasticsearch-eye.pid'
     env 'JAVA_HOME' => '/usr/java/jdk1.8.0_25'
-    env 'ES_MIN_MEM' => '4g'
-    env 'ES_MAX_MEM' => '4g'
+    env 'ES_MIN_MEM' => '{{ elasticsearch_mem }}'
+    env 'ES_MAX_MEM' => '{{ elasticsearch_mem }}'
     start_command './bin/elasticsearch'
 
     daemonize true
